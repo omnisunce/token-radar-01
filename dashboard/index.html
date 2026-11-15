@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — pre-token protocols, ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="pulse" aria-hidden="true"></span><h1>TOKEN RADAR</h1></div>
+  <p class="tag">Every protocol that has not launched a token yet, ranked by what its token would be worth — and what to do about it before it launches.</p>
+  <div class="stats" id="stats"></div>
+</header>
+
+<main>
+  <section class="toolbar" aria-label="Filter the board">
+    <input id="q" type="search" placeholder="Search a protocol…" autocomplete="off">
+    <select id="cat" aria-label="Category"><option value="">All categories</option></select>
+    <select id="chain" aria-label="Chain"><option value="">All chains</option></select>
+    <div class="pills" role="group" aria-label="Status">
+      <button type="button" data-status="all" class="on">All</button>
+      <button type="button" data-status="watchlist">Watchlist</button>
+      <button type="button" data-status="early">Early finds</button>
+    </div>
+    <select id="sort" aria-label="Sort by">
+      <option value="implied">Sort: implied value</option>
+      <option value="tvl">Sort: TVL</option>
+      <option value="growth">Sort: 7-day growth</option>
+      <option value="age">Sort: longest running</option>
+    </select>
+  </section>
+
+  <p class="count" id="count"></p>
+
+  <section class="board-wrap">
+    <table class="board">
+      <thead><tr>
+        <th class="r">#</th><th>Protocol</th><th>Category</th><th>Chains</th>
+        <th class="r">TVL</th><th class="r">7d</th><th class="r">Age</th>
+        <th class="r">Implied value</th><th>Confidence</th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </section>
+
+  <section class="detail" id="detail" hidden></section>
+
+  <section class="how">
+    <h2>How the radar scores a protocol</h2>
+    <p>Implied value = <strong>TVL × peer multiple × growth × age × breadth</strong>. The peer multiple is the median market-cap-per-TVL of the protocols in the same category whose tokens already trade, shrunk toward the global median so a category with one traded peer cannot set a wild multiple. Growth is the 7-day TVL change, age is how long the protocol has run with no token, breadth is how many chains it runs on. Every number comes from the frozen DefiLlama snapshot dated <span id="asof"></span> — no names are hardcoded, and a protocol's rank is the model's claim, not a prediction that a token will launch, or when.</p>
+    <p>A protocol counts as farmable when the snapshot records no token for it and it is not a wrapped, staked or bridged product of a token that already trades. The <strong>watchlist</strong> is the 40 protocols at or above $50M TVL that meet that rule. The <strong>early finds</strong> are the farmable protocols below that floor — the radar exists to find them first.</p>
+  </section>
+
+  <section class="peers">
+    <h2>Already launched — the traded peers behind the multiples</h2>
+    <p>These tokens already trade, so they are not farmable. Their market caps are the yardstick: each category's multiple is the median of its peers' market-cap-per-TVL.</p>
+    <table class="board peers-table">
+      <thead><tr><th>Protocol</th><th>Category</th><th class="r">TVL</th><th class="r">Market cap</th><th class="r">Mcap / TVL</th></tr></thead>
+      <tbody id="peers"></tbody>
+    </table>
+  </section>
+</main>
+
+<footer>
+  <p>Data: frozen DefiLlama protocol snapshot, <span id="asof2"></span>. Implied values are this radar's own estimates from that snapshot, not investment advice and not a forecast of any launch. Built by an AI agent for the make.fun token launch radar bounty.</p>
+</footer>
+
+<script src="steps.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
